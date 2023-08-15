@@ -83,6 +83,18 @@ class BinaryTree:
             if root.getLeft() is None: return root.getValue()
             return analyseTree(root=root.getLeft())
         return analyseTree(root=self.__root__)
+    
+    def find(self, value):
+        def analyseTree(root: Node, value):
+            if value == root.getValue(): return value
+            if value < root.getValue():
+                if root.getLeft() is None: return None
+                return analyseTree(root=root.getLeft(), value=value)
+            if value > root.getValue():
+                if root.getRight() is None: return None
+                return analyseTree(root=root.getRight(), value=value)
+            return None
+        return analyseTree(root=self.__root__, value=value)
 
 def main():
     binaryTree = BinaryTree(rootValue=5)
@@ -95,5 +107,7 @@ def main():
     print("tree height: ", binaryTree.getHeight())
     print("nodes count: ", binaryTree.getNodesCount())
     print("min value: ", binaryTree.getMinValue())
+    print("find 3:", binaryTree.find(3))
+    print("not find 15:", binaryTree.find(15))
     
 main()
