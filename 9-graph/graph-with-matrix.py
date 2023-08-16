@@ -78,6 +78,30 @@ class Graph:
         for index in range(0, len(nodes)):
             print(nodes[index], self.__matrix__[index])
 
+    def __getNeighbors__(self, node: str) -> [str]:
+        nodeIndex = self.__nodes__.index(node)
+        nodeLine = self.__matrix__[nodeIndex]
+        neighbors = []
+        for index, value in enumerate(nodeLine):
+            if (not index == nodeIndex) and (value == 1):
+                neighbor = self.__nodes__[index]
+                neighbors.append(neighbor)
+        return neighbors
+
+    def breadthFirstSearch(self, root: str) -> [str]:
+        marked = []
+        fifo = []
+        self.__nodes__.index(root)
+        marked.append(root)
+        fifo.append(root)
+        while len(fifo) > 0:
+            node = fifo.pop(0)
+            for neighbor in self.__getNeighbors__(node):
+                if neighbor not in marked:
+                    marked.append(neighbor)
+                    fifo.append(neighbor)
+        return marked
+
 def main():
     print("===== oriented =====")
     graph = Graph(oriented=True)
@@ -106,13 +130,16 @@ def main():
     graph.print()
     graph.insertEdges(edges=[('a', 'b'), ('a', 'c'), ('b', 'c')])
     graph.print()
+    print("BFS: ", graph.breadthFirstSearch(root='a'))
     graph.insertNodes(nodes=['e', 'f'])
     graph.print()
     graph.insertEdges(edges=[('e', 'f')])
     graph.print()
+    print("BFS: ", graph.breadthFirstSearch(root='a'))
     graph.removeEdges(edges=[('e', 'f')])
     graph.print()
     graph.removeNodes(nodes=['f', 'c'])
     graph.print()
+    print("BFS: ", graph.breadthFirstSearch(root='a'))
 
 main()
