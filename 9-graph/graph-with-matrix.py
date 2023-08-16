@@ -102,6 +102,22 @@ class Graph:
                     fifo.append(neighbor)
         return marked
 
+    def bfsDistAndPath(self, root: str) -> (dict, dict):
+        self.__nodes__.index(root)
+        dist = dict()
+        dist[root] = 0
+        path = dict()
+        path[root] = None
+        fifo = [root]
+        while fifo:
+            node = fifo.pop(0)
+            for neighbor in self.__getNeighbors__(node):
+                if neighbor not in dist:
+                    dist[neighbor] = dist[node] + 1
+                    path[neighbor] = node
+                    fifo.append(neighbor)
+        return dist, path
+
 def main():
     print("===== oriented =====")
     graph = Graph(oriented=True)
@@ -130,16 +146,24 @@ def main():
     graph.print()
     graph.insertEdges(edges=[('a', 'b'), ('a', 'c'), ('b', 'c')])
     graph.print()
-    print("BFS: ", graph.breadthFirstSearch(root='a'))
     graph.insertNodes(nodes=['e', 'f'])
     graph.print()
     graph.insertEdges(edges=[('e', 'f')])
     graph.print()
-    print("BFS: ", graph.breadthFirstSearch(root='a'))
     graph.removeEdges(edges=[('e', 'f')])
     graph.print()
     graph.removeNodes(nodes=['f', 'c'])
     graph.print()
-    print("BFS: ", graph.breadthFirstSearch(root='a'))
+
+    print("===== breadth first search =====")
+    graph = Graph(oriented=False)
+    graph.insertNodes(nodes=['a', 'b', 'c', 'd'])
+    graph.print()
+    graph.insertEdges(edges=[('a', 'b'), ('a', 'c'), ('b', 'c'), ('b', 'd')])
+    graph.print()
+    print("BFS markeds: ", graph.breadthFirstSearch(root='a'))
+    dist, path = graph.bfsDistAndPath(root='a')
+    print("BFS dist: ", dist)
+    print("BFS path: ", path)
 
 main()
