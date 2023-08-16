@@ -117,6 +117,18 @@ class Graph:
                     path[neighbor] = node
                     fifo.append(neighbor)
         return dist, path
+    
+    def depthFirstSearch(self, source: str, target: str) -> bool:
+        stack = [source]
+        visited = []
+        while stack:
+            node = stack.pop()
+            if node in visited: continue
+            visited.append(node)
+            if node == target: return True
+            for neighbor in self.__getNeighbors__(node):
+                if neighbor not in visited: stack.append(neighbor)
+        return False
 
 def main():
     print("===== oriented =====")
@@ -165,5 +177,9 @@ def main():
     dist, path = graph.bfsDistAndPath(root='a')
     print("BFS dist: ", dist)
     print("BFS path: ", path)
+
+    print("===== depth first search =====")
+    print("DFS (exists path a->d?): ", graph.depthFirstSearch(source='a', target='d'))
+    print("DFS (exists path a->z?): ", graph.depthFirstSearch(source='a', target='z'))
 
 main()
